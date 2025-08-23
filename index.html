@@ -13,10 +13,10 @@ body.dark{background:#0d0d0d;color:#fff}
 /* ---------- Header ---------- */
 header{display:flex;align-items:center;justify-content:center;padding:15px;position:relative}
 header img.logo{position:absolute;left:15px;top:15px;width:50px;height:50px}
-header h1{margin:0;font-size:28px;text-align:center;color:#006400;text-shadow:0 0 3px rgba(0,100,0,.3)}
-header h2{margin:5px 0 0 0;font-size:16px;font-weight:400}
+header h1{margin:0;font-size:28px;color:#006400;text-shadow:0 0 2px rgba(0,100,0,.3)}
+header h2{margin:4px 0 0;font-size:16px;font-weight:400}
 
-/* ---------- Drawer ---------- */
+/* ---------- Drawer (fully off-screen when closed, no overlap) ---------- */
 .drawer{position:fixed;top:0;right:-280px;width:260px;height:100%;background:#f0f0f0;transition:right .3s ease-in-out;padding:20px;display:flex;flex-direction:column;z-index:1000;overflow-y:auto;box-shadow:-2px 0 10px rgba(0,0,0,.2)}
 .drawer.dark{background:#111}
 .drawer.open{right:0}
@@ -28,31 +28,42 @@ header h2{margin:5px 0 0 0;font-size:16px;font-weight:400}
 .drawer .bottom span{color:#006400;cursor:pointer}
 
 /* ---------- Menu Button ---------- */
-#menuBtn{position:fixed;top:15px;right:15px;background:#006400;border:none;border-radius:50%;width:40px;height:40px;font-size:18px;color:#fff;cursor:pointer;z-index:1100}
+#menuBtn{position:fixed;top:15px;right:15px;background:#006400;color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;z-index:1001}
 
 /* ---------- Pages ---------- */
 .page{display:none;padding:15px}
 .page.active{display:block}
-
-/* ---------- Gallery (fullscreen) ---------- */
-#fullscreenBtn{position:fixed;bottom:15px;right:15px;background:#006400;color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:22px;cursor:pointer;z-index:999}
-#fullscreenBox{display:none;position:fixed;inset:0;background:#000;z-index:10000;align-items:center;padding:10px;overflow-x:auto}
-#fullscreenBox.horizontal{display:flex}
-#fullscreenBox img,#fullscreenBox video{height:80vh;margin-right:10px;border-radius:8px;object-fit:cover}
-#fullscreenBox .close{position:absolute;top:15px;left:15px;background:#fff;color:#000;border:none;border-radius:50%;width:35px;height:35px;font-size:20px;cursor:pointer}
 
 /* ---------- Vertical Gallery ---------- */
 #gallery{display:flex;flex-direction:column;align-items:center;gap:15px;margin-top:15px}
 #gallery img,#gallery video{width:90%;max-width:400px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 body.dark #gallery img,body.dark #gallery video{box-shadow:0 2px 6px rgba(255,255,255,.15)}
 
-/* ---------- Lists ---------- */
-.presenters,.participants{max-width:600px;margin:20px auto; text-align:center}
-.presenters h2,.participants h2{color:#006400;margin-bottom:10px}
-.presenters p,.participants p{margin:4px 0;font-size:18px;opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-.presenters p.show,.participants p.show{opacity:1;transform:none}
+/* ---------- Fullscreen Mode ---------- */
+#fullscreenBtn{position:fixed;bottom:15px;right:15px;background:#006400;color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:22px;cursor:pointer;z-index:999}
+#fullscreenBox{display:none;position:fixed;inset:0;background:#000;z-index:10000;overflow-x:auto;overflow-y:hidden;white-space:nowrap}
+#fullscreenBox img,#fullscreenBox video{display:inline-block;width:100vw;height:100vh;object-fit:cover}
+#fullscreenBox .close{position:absolute;top:15px;left:15px;background:#fff;color:#000;border:none;border-radius:50%;width:35px;height:35px;font-size:20px;cursor:pointer}
+
+/* ---------- About Developer (animated) ---------- */
+.about-wrapper{max-width:600px;margin:30px auto;padding:0 15px}
+.about-card{background:linear-gradient(135deg,#006400 0%,#32cd32 100%);color:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.2);transform:scale(.95);transition:transform .6s ease}
+body.dark .about-card{background:linear-gradient(135deg,#1a1a1a 0%,#333 100%)}
+.about-card.show{transform:scale(1)}
+.about-card h2{margin:0;padding:20px;font-size:24px;text-align:center}
+.about-card p{padding:0 20px 20px;margin:0;font-size:17px;line-height:1.6}
+.contact-buttons{display:flex;flex-direction:column;align-items:center;gap:10px;padding:0 20px 20px}
+.contact-buttons button{background:#fff;color:#006400;border:none;border-radius:25px;padding:10px 20px;width:220px;font-weight:bold;cursor:pointer;transition:.3s}
+.contact-buttons button:hover{background:#f0f0f0;transform:scale(1.05)}
+
+/* ---------- Reveal List (participants & presenters) ---------- */
+.reveal-list{max-width:400px;margin:20px auto;text-align:center}
+.reveal-list h2{color:#006400;margin-bottom:15px}
+.reveal-list p{margin:6px 0;font-size:18px;opacity:0;transform:translateY(15px);transition:opacity .6s ease,transform .6s ease}
+.reveal-list p.show{opacity:1;transform:none}
 </style>
 </head>
+
 <body class="day">
 <!-- Drawer -->
 <button id="menuBtn">☰</button>
@@ -81,7 +92,7 @@ body.dark #gallery img,body.dark #gallery video{box-shadow:0 2px 6px rgba(255,25
 
 <!-- Presenters Page -->
 <div id="presenters" class="page">
-  <div class="presenters">
+  <div class="reveal-list">
     <h2>مقدمين السمنار</h2>
     <p>أنس عثمان ابراهيم</p>
     <p>ميرغني عمر</p>
@@ -92,22 +103,24 @@ body.dark #gallery img,body.dark #gallery video{box-shadow:0 2px 6px rgba(255,25
     <p>مدثر عبد العزيز النور</p>
     <p>رؤى الوليد جامع</p>
     <p>علي عوض علي</p>
-    <p>بالإضافة إلى لجنة التنظيم </p>
+    <p>بالإضافة إلى لجنة التنظيم</p>
   </div>
 </div>
 
-<!-- About Page -->
+<!-- About Developer Page -->
 <div id="about" class="page">
-  <div class="about-content">
-    <h2>عن المطور</h2>
-    <p>الاسم: أنس عثمان ابراهيم<br>
-       تاريخ الميلاد: 17/8/2002<br>
-       الدراسة: جامعة وادي النيل / كلية الهندسة ، دفعة B22<br>
-       لدي شغف بالبرمجة وتعلمت: Java, HTML, CSS, JavaScript, Python, PHP, Laravel, Pascal</p>
-    <div class="contact-buttons">
-      <button onclick="window.open('https://wa.me/249112698750')">Whatsapp</button>
-      <button onclick="window.open('https://t.me/star2droid')">Telegram</button>
-      <button onclick="window.open('https://m.me/star4droid22')">Messenger</button>
+  <div class="about-wrapper">
+    <div class="about-card">
+      <h2>عن المطور</h2>
+      <p>الاسم: أنس عثمان ابراهيم<br>
+         تاريخ الميلاد: 17/8/2002<br>
+         الدراسة: جامعة وادي النيل / كلية الهندسة ، دفعة B22<br>
+         لدي شغف بالبرمجة وتعلمت: Java, HTML, CSS, JavaScript, Python, PHP, Laravel, Pascal</p>
+      <div class="contact-buttons">
+        <button onclick="window.open('https://wa.me/249112698750')">Whatsapp</button>
+        <button onclick="window.open('https://t.me/star2droid')">Telegram</button>
+        <button onclick="window.open('https://m.me/star4droid22')">Messenger</button>
+      </div>
     </div>
   </div>
 </div>
@@ -119,87 +132,76 @@ body.dark #gallery img,body.dark #gallery video{box-shadow:0 2px 6px rgba(255,25
 <button id="fullscreenBtn" onclick="openFullscreen()">⛶</button>
 
 <script>
-/* ---------- Drawer & Pages ---------- */
+/* ---------- Drawer Toggle ---------- */
 const drawer=document.getElementById('drawer');
 const menuBtn=document.getElementById('menuBtn');
 menuBtn.addEventListener('click',()=>drawer.classList.toggle('open'));
 
+/* ---------- Navigation ---------- */
+const pages=['home','presenters','about'];
 function openPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  pages.forEach(p=>document.getElementById(p).classList.remove('active'));
   document.getElementById(id).classList.add('active');
   drawer.classList.remove('open');
-  animateItems(id);
+  animateReveal(id);
 }
 
+/* ---------- Dark Mode ---------- */
 function toggleDarkMode(){
   document.body.classList.toggle('dark');
   document.body.classList.toggle('day');
   drawer.classList.toggle('dark');
 }
 
-/* ---------- Populate Gallery ---------- */
+/* ---------- Dynamic Gallery ---------- */
 const gallery=document.getElementById('gallery');
-const fullscreenBox=document.getElementById('fullscreenBox');
 const items=[];
-
-// 1.png … 10.png
-for(let i=1;i<=10;i++){
-  if(i===2){
-    items.push({type:'video',src:'files/2.mp4'});
-  }else{
-    items.push({type:'img',src:`files/${i}.png`});
-  }
-}
-// 11.mp4 12.mp4
-items.push({type:'video',src:'files/11.mp4'});
-items.push({type:'video',src:'files/12.mp4'});
-// 12.png … 17.png
-for(let i=12;i<=17;i++){
-  items.push({type:'img',src:`files/${i}.png`});
-}
-
-items.forEach(item=>{
-  const el=item.type==='video'
-    ?document.createElement('video')
-    :document.createElement('img');
-  el.src=item.src;
-  if(item.type==='video'){el.controls=true;}
+for(let i=1;i<=10;i++){items.push(i===2?{t:'v',s:'files/2.mp4'}:{t:'i',s:`files/${i}.png`});}
+items.push({t:'v',s:'files/11.mp4'},{t:'v',s:'files/12.mp4'});
+for(let i=12;i<=17;i++){items.push({t:'i',s:`files/${i}.png`});}
+items.forEach(({t,s})=>{
+  const el=t==='v'?document.createElement('video'):document.createElement('img');
+  el.src=s; if(t==='v') el.controls=true;
   gallery.appendChild(el);
 });
 
-/* ---------- Fullscreen ---------- */
+/* ---------- Fullscreen Mode ---------- */
 function openFullscreen(){
-  fullscreenBox.innerHTML='<button class="close" onclick="closeFullscreen()">✕</button>';
-  items.forEach(item=>{
-    const el=item.type==='video'
-      ?document.createElement('video')
-      :document.createElement('img');
-    el.src=item.src;
-    if(item.type==='video'){el.controls=true;}
-    fullscreenBox.appendChild(el);
+  const box=document.getElementById('fullscreenBox');
+  box.innerHTML='<button class="close" onclick="closeFullscreen()">✕</button>';
+  items.forEach(({t,s})=>{
+    const el=t==='v'?document.createElement('video'):document.createElement('img');
+    el.src=s; if(t==='v') el.controls=true;
+    box.appendChild(el);
   });
-  fullscreenBox.style.display='flex';
+  box.style.display='block';
 }
 function closeFullscreen(){
-  fullscreenBox.style.display='none';
+  document.getElementById('fullscreenBox').style.display='none';
 }
 
-/* ---------- One-by-one Animation ---------- */
-function animateItems(pageId){
-  const container=document.querySelector(`#${pageId} p`);
-  if(!container) return;
-  const ps=document.querySelectorAll(`#${pageId} p`);
-  ps.forEach(p=>p.classList.remove('show'));
+/* ---------- Reveal Animations ---------- */
+function animateReveal(pageId){
+  const list=document.querySelectorAll(`#${pageId} .reveal-list p`);
+  list.forEach(p=>p.classList.remove('show'));
   let idx=0;
   const reveal=()=>{
-    if(idx<ps.length){
-      ps[idx].classList.add('show');
-      idx++;
-      setTimeout(reveal,400);
-    }
+    if(idx<list.length){list[idx].classList.add('show'); idx++; setTimeout(reveal,300);}
   };
   reveal();
 }
+
+/* ---------- About Card Scale on Scroll ---------- */
+const aboutCard=document.querySelector('.about-card');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    e.target.classList.toggle('show',e.isIntersecting);
+  });
+},{threshold:0.4});
+obs.observe(aboutCard);
+
+/* ---------- Initial Load ---------- */
+openPage('home');
 </script>
 </body>
 </html>
