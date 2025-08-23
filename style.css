@@ -1,0 +1,89 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Cairo', Arial, sans-serif;
+  background: #f9f9f9;
+  color: #222;
+  direction: rtl;
+}
+
+header {
+  text-align: center;
+  padding: 2rem 1rem 0.5rem 1rem;
+  background: #003366;
+  color: #fff;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+header h2 {
+  margin: 0.5rem 0 0 0;
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: #b3e0ff;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.rounded-card {
+  background: #fff;
+  border-radius: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  padding: 2rem;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+}
+
+.rounded-card h3 {
+  margin: 0 0 2rem 0;
+  font-size: 1.5rem;
+  color: #003366;
+}
+
+.media-scroll {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scrollbar-width: thin;
+}
+
+.media-scroll img,
+.media-scroll video {
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  background: #eee;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .rounded-card {
+    padding: 1rem;
+    max-width: 98vw;
+  }
+  .media-scroll img,
+  .media-scroll video {
+    width: 120px;
+    height: 80px;
+  }
+  header h1 {
+    font-size: 1.4rem;
+  }
+  header h2 {
+    font-size: 1rem;
+  }
+}
