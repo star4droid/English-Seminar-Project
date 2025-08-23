@@ -1,30 +1,205 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>جامعة وادي النيل - كلية الهندسة والتقنية</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>جامعة وادي النيل</title>
+<style>
+/* ---------- Base ---------- */
+html,body{margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;transition:background .3s,color .3s}
+body.day{background:#fff;color:#000}
+body.dark{background:#0d0d0d;color:#fff}
+
+/* ---------- Header ---------- */
+header{display:flex;align-items:center;justify-content:center;padding:15px;position:relative}
+header img.logo{position:absolute;left:15px;top:15px;width:50px;height:50px}
+header h1{margin:0;font-size:28px;text-align:center;color:#006400;text-shadow:0 0 3px rgba(0,100,0,.3)}
+header h2{margin:5px 0 0 0;font-size:16px;font-weight:400}
+
+/* ---------- Drawer ---------- */
+.drawer{position:fixed;top:0;right:-280px;width:260px;height:100%;background:#f0f0f0;transition:right .3s ease-in-out;padding:20px;display:flex;flex-direction:column;z-index:1000;overflow-y:auto;box-shadow:-2px 0 10px rgba(0,0,0,.2)}
+.drawer.dark{background:#111}
+.drawer.open{right:0}
+.drawer h3{color:#006400;margin-top:0}
+.drawer button{margin:8px 0;padding:10px;border:none;border-radius:8px;cursor:pointer;background:#fff;color:#000;font-weight:bold;transition:.2s}
+.drawer.dark button{background:#222;color:#0f0}
+.drawer button:hover{background:#006400;color:#fff}
+.drawer .bottom{margin-top:auto;font-size:13px;color:#888}
+.drawer .bottom span{color:#006400;cursor:pointer}
+
+/* ---------- Menu Button ---------- */
+#menuBtn{position:fixed;top:15px;right:15px;background:#006400;border:none;border-radius:50%;width:40px;height:40px;font-size:18px;color:#fff;cursor:pointer;z-index:1100}
+
+/* ---------- Pages ---------- */
+.page{display:none;padding:15px}
+.page.active{display:block}
+
+/* ---------- Gallery (fullscreen) ---------- */
+#fullscreenBtn{position:fixed;bottom:15px;right:15px;background:#006400;color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:22px;cursor:pointer;z-index:999}
+#fullscreenBox{display:none;position:fixed;inset:0;background:#000;z-index:10000;align-items:center;padding:10px;overflow-x:auto}
+#fullscreenBox.horizontal{display:flex}
+#fullscreenBox img,#fullscreenBox video{height:80vh;margin-right:10px;border-radius:8px;object-fit:cover}
+#fullscreenBox .close{position:absolute;top:15px;left:15px;background:#fff;color:#000;border:none;border-radius:50%;width:35px;height:35px;font-size:20px;cursor:pointer}
+
+/* ---------- Vertical Gallery ---------- */
+#gallery{display:flex;flex-direction:column;align-items:center;gap:15px;margin-top:15px}
+#gallery img,#gallery video{width:90%;max-width:400px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+body.dark #gallery img,body.dark #gallery video{box-shadow:0 2px 6px rgba(255,255,255,.15)}
+
+/* ---------- Lists ---------- */
+.presenters,.participants{max-width:600px;margin:20px auto; text-align:center}
+.presenters h2,.participants h2{color:#006400;margin-bottom:10px}
+.presenters p,.participants p{margin:4px 0;font-size:18px;opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.presenters p.show,.participants p.show{opacity:1;transform:none}
+</style>
 </head>
-<body>
-  <header>
-    <h1>جامعة وادي النيل - كلية الهندسة والتقنية</h1>
-    <h2>دفعة وفاق - أسرة كهرباء B22</h2>
-  </header>
-  <main>
-    <div class="center-container">
-      <div class="rounded-card">
-        <h3>سمنار انجليزي</h3>
-        <div class="media-scroll">
-          <img src="test.png" alt="test">
-          <video width="180" controls>
-            <source src="intro.mp4" type="video/mp4">
-            فيديو غير مدعوم
-          </video>
-          <img src="test.png" alt="test">
-          </div>
-      </div>
+<body class="day">
+<!-- Drawer -->
+<button id="menuBtn">☰</button>
+<div class="drawer" id="drawer">
+  <h3>القائمة</h3>
+  <button onclick="openPage('home')">الرئيسية</button>
+  <button onclick="openPage('presenters')">مقدمين السمنار</button>
+  <button onclick="openPage('about')">عن المطور</button>
+  <button onclick="toggleDarkMode()">تغيير الوضع</button>
+  <div class="bottom">تمت البرمجة بواسطة <span onclick="openPage('about')">أنس عثمان</span></div>
+</div>
+
+<!-- Header -->
+<header>
+  <img src="files/university.png" class="logo" alt="logo">
+  <div>
+    <h1>جامعة وادي النيل</h1>
+    <h2>كلية الهندسة والتقنية</h2>
+  </div>
+</header>
+
+<!-- Home Page -->
+<div id="home" class="page active">
+  <div id="gallery"></div>
+</div>
+
+<!-- Presenters Page -->
+<div id="presenters" class="page">
+  <div class="presenters">
+    <h2>مقدمين السمنار</h2>
+    <p>أنس عثمان ابراهيم</p>
+    <p>ميرغني عمر</p>
+    <p>سلمى عبد الماجد أحمد</p>
+    <p>سيف الدين طارق أحمد</p>
+    <p>ياسين محمد المأمون</p>
+    <p>إسراء عامر أبو بكر</p>
+    <p>مدثر عبد العزيز النور</p>
+    <p>رؤى الوليد جامع</p>
+    <p>علي عوض علي</p>
+    <p>بالإضافة إلى لجنة التنظيم </p>
+  </div>
+</div>
+
+<!-- About Page -->
+<div id="about" class="page">
+  <div class="about-content">
+    <h2>عن المطور</h2>
+    <p>الاسم: أنس عثمان ابراهيم<br>
+       تاريخ الميلاد: 17/8/2002<br>
+       الدراسة: جامعة وادي النيل / كلية الهندسة ، دفعة B22<br>
+       لدي شغف بالبرمجة وتعلمت: Java, HTML, CSS, JavaScript, Python, PHP, Laravel, Pascal</p>
+    <div class="contact-buttons">
+      <button onclick="window.open('https://wa.me/249112698750')">Whatsapp</button>
+      <button onclick="window.open('https://t.me/star2droid')">Telegram</button>
+      <button onclick="window.open('https://m.me/star4droid22')">Messenger</button>
     </div>
-  </main>
+  </div>
+</div>
+
+<!-- Fullscreen Box -->
+<div id="fullscreenBox">
+  <button class="close" onclick="closeFullscreen()">✕</button>
+</div>
+<button id="fullscreenBtn" onclick="openFullscreen()">⛶</button>
+
+<script>
+/* ---------- Drawer & Pages ---------- */
+const drawer=document.getElementById('drawer');
+const menuBtn=document.getElementById('menuBtn');
+menuBtn.addEventListener('click',()=>drawer.classList.toggle('open'));
+
+function openPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  drawer.classList.remove('open');
+  animateItems(id);
+}
+
+function toggleDarkMode(){
+  document.body.classList.toggle('dark');
+  document.body.classList.toggle('day');
+  drawer.classList.toggle('dark');
+}
+
+/* ---------- Populate Gallery ---------- */
+const gallery=document.getElementById('gallery');
+const fullscreenBox=document.getElementById('fullscreenBox');
+const items=[];
+
+// 1.png … 10.png
+for(let i=1;i<=10;i++){
+  if(i===2){
+    items.push({type:'video',src:'files/2.mp4'});
+  }else{
+    items.push({type:'img',src:`files/${i}.png`});
+  }
+}
+// 11.mp4 12.mp4
+items.push({type:'video',src:'files/11.mp4'});
+items.push({type:'video',src:'files/12.mp4'});
+// 12.png … 17.png
+for(let i=12;i<=17;i++){
+  items.push({type:'img',src:`files/${i}.png`});
+}
+
+items.forEach(item=>{
+  const el=item.type==='video'
+    ?document.createElement('video')
+    :document.createElement('img');
+  el.src=item.src;
+  if(item.type==='video'){el.controls=true;}
+  gallery.appendChild(el);
+});
+
+/* ---------- Fullscreen ---------- */
+function openFullscreen(){
+  fullscreenBox.innerHTML='<button class="close" onclick="closeFullscreen()">✕</button>';
+  items.forEach(item=>{
+    const el=item.type==='video'
+      ?document.createElement('video')
+      :document.createElement('img');
+    el.src=item.src;
+    if(item.type==='video'){el.controls=true;}
+    fullscreenBox.appendChild(el);
+  });
+  fullscreenBox.style.display='flex';
+}
+function closeFullscreen(){
+  fullscreenBox.style.display='none';
+}
+
+/* ---------- One-by-one Animation ---------- */
+function animateItems(pageId){
+  const container=document.querySelector(`#${pageId} p`);
+  if(!container) return;
+  const ps=document.querySelectorAll(`#${pageId} p`);
+  ps.forEach(p=>p.classList.remove('show'));
+  let idx=0;
+  const reveal=()=>{
+    if(idx<ps.length){
+      ps[idx].classList.add('show');
+      idx++;
+      setTimeout(reveal,400);
+    }
+  };
+  reveal();
+}
+</script>
 </body>
 </html>
