@@ -39,10 +39,20 @@ header h2{margin:4px 0 0;font-size:16px;font-weight:400}
 #gallery img,#gallery video{width:90%;max-width:400px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 body.dark #gallery img,body.dark #gallery video{box-shadow:0 2px 6px rgba(255,255,255,.15)}
 
-/* ---------- Fullscreen Mode ---------- */
+/* ---------- Fullscreen Mode (Updated) ---------- */
 #fullscreenBtn{position:fixed;bottom:15px;right:15px;background:#006400;color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:22px;cursor:pointer;z-index:999}
-#fullscreenBox{display:none;position:fixed;inset:0;background:#000;z-index:10000;overflow-x:auto;overflow-y:hidden;white-space:nowrap}
-#fullscreenBox img,#fullscreenBox video{display:inline-block;width:100vw;height:100vh;object-fit:cover}
+#fullscreenBox{display:none;position:fixed;inset:0;background:#000;z-index:10000;white-space:nowrap;
+    /* Added flexbox properties to center the content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#fullscreenBox img, #fullscreenBox video{
+    /* Use contain to maintain aspect ratio, and remove height/width to let it scale automatically */
+    max-width: 100vw;
+    max-height: 100vh;
+    object-fit: contain;
+}
 #fullscreenBox .close{position:absolute;top:15px;left:15px;background:#fff;color:#000;border:none;border-radius:50%;width:35px;height:35px;font-size:20px;cursor:pointer}
 
 /* ---------- About Developer (animated) ---------- */
@@ -65,69 +75,63 @@ body.dark .about-card{background:linear-gradient(135deg,#1a1a1a 0%,#333 100%)}
 </head>
 
 <body class="day">
-<!-- Drawer -->
 <button id="menuBtn">☰</button>
 <div class="drawer" id="drawer">
-  <h3>القائمة</h3>
-  <button onclick="openPage('home')">الرئيسية</button>
-  <button onclick="openPage('presenters')">مقدمين السمنار</button>
-  <button onclick="openPage('about')">عن المطور</button>
-  <button onclick="toggleDarkMode()">تغيير الوضع</button>
-  <div class="bottom">تمت البرمجة بواسطة <span onclick="openPage('about')">أنس عثمان</span></div>
+  <h3>القائمة</h3>
+  <button onclick="openPage('home')">الرئيسية</button>
+  <button onclick="openPage('presenters')">مقدمين السمنار</button>
+  <button onclick="openPage('about')">عن المطور</button>
+  <button onclick="toggleDarkMode()">تغيير الوضع</button>
+  <div class="bottom">تمت البرمجة بواسطة <span onclick="openPage('about')">أنس عثمان</span></div>
 </div>
 
-<!-- Header -->
 <header>
-  <img src="files/university.png" class="logo" alt="logo">
-  <div>
-    <h1>جامعة وادي النيل</h1>
-    <h2>كلية الهندسة والتقنية</h2>
-  </div>
+  <img src="files/university.png" class="logo" alt="logo">
+  <div>
+    <h1>جامعة وادي النيل</h1>
+    <h2>كلية الهندسة والتقنية</h2>
+  </div>
 </header>
 
-<!-- Home Page -->
 <div id="home" class="page active">
-  <div id="gallery"></div>
+  <div id="gallery"></div>
 </div>
 
-<!-- Presenters Page -->
 <div id="presenters" class="page">
-  <div class="reveal-list">
-    <h2>مقدمين السمنار</h2>
-    <p>أنس عثمان ابراهيم</p>
-    <p>ميرغني عمر</p>
-    <p>سلمى عبد الماجد أحمد</p>
-    <p>سيف الدين طارق أحمد</p>
-    <p>ياسين محمد المأمون</p>
-    <p>إسراء عامر أبو بكر</p>
-    <p>مدثر عبد العزيز النور</p>
-    <p>رؤى الوليد جامع</p>
-    <p>علي عوض علي</p>
-    <p>بالإضافة إلى لجنة التنظيم</p>
-  </div>
+  <div class="reveal-list">
+    <h2>مقدمين السمنار</h2>
+    <p>أنس عثمان ابراهيم</p>
+    <p>ميرغني عمر</p>
+    <p>سلمى عبد الماجد أحمد</p>
+    <p>سيف الدين طارق أحمد</p>
+    <p>ياسين محمد المأمون</p>
+    <p>إسراء عامر أبو بكر</p>
+    <p>مدثر عبد العزيز النور</p>
+    <p>رؤى الوليد جامع</p>
+    <p>علي عوض علي</p>
+    <p>بالإضافة إلى لجنة التنظيم</p>
+  </div>
 </div>
 
-<!-- About Developer Page -->
 <div id="about" class="page">
-  <div class="about-wrapper">
-    <div class="about-card">
-      <h2>عن المطور</h2>
-      <p>الاسم: أنس عثمان ابراهيم<br>
-         تاريخ الميلاد: 17/8/2002<br>
-         الدراسة: جامعة وادي النيل / كلية الهندسة ، دفعة B22<br>
-         لدي شغف بالبرمجة وتعلمت: Java, HTML, CSS, JavaScript, Python, PHP, Laravel, Pascal</p>
-      <div class="contact-buttons">
-        <button onclick="window.open('https://wa.me/249112698750')">Whatsapp</button>
-        <button onclick="window.open('https://t.me/star2droid')">Telegram</button>
-        <button onclick="window.open('https://m.me/star4droid22')">Messenger</button>
-      </div>
-    </div>
-  </div>
+  <div class="about-wrapper">
+    <div class="about-card">
+      <h2>عن المطور</h2>
+      <p>الاسم: أنس عثمان ابراهيم<br>
+         تاريخ الميلاد: 17/8/2002<br>
+         الدراسة: جامعة وادي النيل / كلية الهندسة ، دفعة B22<br>
+         لدي شغف بالبرمجة وتعلمت: Java, HTML, CSS, JavaScript, Python, PHP, Laravel, Pascal</p>
+      <div class="contact-buttons">
+        <button onclick="window.open('https://wa.me/249112698750')">Whatsapp</button>
+        <button onclick="window.open('https://t.me/star2droid')">Telegram</button>
+        <button onclick="window.open('https://m.me/star4droid22')">Messenger</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Fullscreen Box -->
 <div id="fullscreenBox">
-  <button class="close" onclick="closeFullscreen()">✕</button>
+  <button class="close" onclick="closeFullscreen()">✕</button>
 </div>
 <button id="fullscreenBtn" onclick="openFullscreen()">⛶</button>
 
@@ -140,17 +144,17 @@ menuBtn.addEventListener('click',()=>drawer.classList.toggle('open'));
 /* ---------- Navigation ---------- */
 const pages=['home','presenters','about'];
 function openPage(id){
-  pages.forEach(p=>document.getElementById(p).classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  drawer.classList.remove('open');
-  animateReveal(id);
+  pages.forEach(p=>document.getElementById(p).classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  drawer.classList.remove('open');
+  animateReveal(id);
 }
 
 /* ---------- Dark Mode ---------- */
 function toggleDarkMode(){
-  document.body.classList.toggle('dark');
-  document.body.classList.toggle('day');
-  drawer.classList.toggle('dark');
+  document.body.classList.toggle('dark');
+  document.body.classList.toggle('day');
+  drawer.classList.toggle('dark');
 }
 
 /* ---------- Dynamic Gallery ---------- */
@@ -160,43 +164,47 @@ for(let i=1;i<=10;i++){items.push(i===2?{t:'v',s:'files/2.mp4'}:{t:'i',s:`files/
 items.push({t:'v',s:'files/11.mp4'},{t:'v',s:'files/12.mp4'});
 for(let i=12;i<=17;i++){items.push({t:'i',s:`files/${i}.png`});}
 items.forEach(({t,s})=>{
-  const el=t==='v'?document.createElement('video'):document.createElement('img');
-  el.src=s; if(t==='v') el.controls=true;
-  gallery.appendChild(el);
+  const el=t==='v'?document.createElement('video'):document.createElement('img');
+  el.src=s; if(t==='v') el.controls=true;
+  gallery.appendChild(el);
 });
 
-/* ---------- Fullscreen Mode ---------- */
+/* ---------- Fullscreen Mode (Updated) ---------- */
 function openFullscreen(){
-  const box=document.getElementById('fullscreenBox');
-  box.innerHTML='<button class="close" onclick="closeFullscreen()">✕</button>';
-  items.forEach(({t,s})=>{
-    const el=t==='v'?document.createElement('video'):document.createElement('img');
-    el.src=s; if(t==='v') el.controls=true;
-    box.appendChild(el);
-  });
-  box.style.display='block';
+  const box=document.getElementById('fullscreenBox');
+  const closeBtn=box.querySelector('.close');
+  box.innerHTML=''; // Clear existing content
+  box.appendChild(closeBtn);
+  items.forEach(({t,s})=>{
+    const el=t==='v'?document.createElement('video'):document.createElement('img');
+    el.src=s; if(t==='v') el.controls=true;
+    box.appendChild(el);
+  });
+  box.style.display='flex';
+  document.body.classList.add('fullscreen-active');
 }
 function closeFullscreen(){
-  document.getElementById('fullscreenBox').style.display='none';
+  document.getElementById('fullscreenBox').style.display='none';
+  document.body.classList.remove('fullscreen-active');
 }
 
 /* ---------- Reveal Animations ---------- */
 function animateReveal(pageId){
-  const list=document.querySelectorAll(`#${pageId} .reveal-list p`);
-  list.forEach(p=>p.classList.remove('show'));
-  let idx=0;
-  const reveal=()=>{
-    if(idx<list.length){list[idx].classList.add('show'); idx++; setTimeout(reveal,300);}
-  };
-  reveal();
+  const list=document.querySelectorAll(`#${pageId} .reveal-list p`);
+  list.forEach(p=>p.classList.remove('show'));
+  let idx=0;
+  const reveal=()=>{
+    if(idx<list.length){list[idx].classList.add('show'); idx++; setTimeout(reveal,300);}
+  };
+  reveal();
 }
 
 /* ---------- About Card Scale on Scroll ---------- */
 const aboutCard=document.querySelector('.about-card');
 const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    e.target.classList.toggle('show',e.isIntersecting);
-  });
+  entries.forEach(e=>{
+    e.target.classList.toggle('show',e.isIntersecting);
+  });
 },{threshold:0.4});
 obs.observe(aboutCard);
 
