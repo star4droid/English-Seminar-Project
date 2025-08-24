@@ -41,19 +41,36 @@ body.dark #gallery img,body.dark #gallery video{box-shadow:0 2px 6px rgba(255,25
 
 /* ---------- Fullscreen Mode (Updated) ---------- */
 #fullscreenBtn{position:fixed;bottom:15px;right:15px;background:#006400;color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:22px;cursor:pointer;z-index:999}
-#fullscreenBox{display:none;position:fixed;inset:0;background:#000;z-index:10000;white-space:nowrap;
-    /* Added flexbox properties to center the content */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#fullscreenBox{
+    /* The main change: make the box visible by default */
+    display: block; 
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 10000;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
 #fullscreenBox img, #fullscreenBox video{
-    /* Use contain to maintain aspect ratio, and remove height/width to let it scale automatically */
-    max-width: 100vw;
-    max-height: 100vh;
+    display: inline-block;
+    width: 100vw;
+    height: 100vh;
     object-fit: contain;
 }
-#fullscreenBox .close{position:absolute;top:15px;left:15px;background:#fff;color:#000;border:none;border-radius:50%;width:35px;height:35px;font-size:20px;cursor:pointer}
+#fullscreenBox .close{
+    position:absolute;
+    top:15px;
+    left:15px;
+    background:#fff;
+    color:#000;
+    border:none;
+    border-radius:50%;
+    width:35px;
+    height:35px;
+    font-size:20px;
+    cursor:pointer;
+}
 
 /* ---------- About Developer (animated) ---------- */
 .about-wrapper{max-width:600px;margin:30px auto;padding:0 15px}
@@ -169,7 +186,7 @@ items.forEach(({t,s})=>{
   gallery.appendChild(el);
 });
 
-/* ---------- Fullscreen Mode (Updated) ---------- */
+/* ---------- Fullscreen Mode ---------- */
 function openFullscreen(){
   const box=document.getElementById('fullscreenBox');
   const closeBtn=box.querySelector('.close');
@@ -180,12 +197,10 @@ function openFullscreen(){
     el.src=s; if(t==='v') el.controls=true;
     box.appendChild(el);
   });
-  box.style.display='flex';
-  document.body.classList.add('fullscreen-active');
+  box.style.display='block';
 }
 function closeFullscreen(){
   document.getElementById('fullscreenBox').style.display='none';
-  document.body.classList.remove('fullscreen-active');
 }
 
 /* ---------- Reveal Animations ---------- */
@@ -210,6 +225,7 @@ obs.observe(aboutCard);
 
 /* ---------- Initial Load ---------- */
 openPage('home');
+openFullscreen();
 </script>
 </body>
 </html>
