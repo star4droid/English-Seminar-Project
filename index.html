@@ -40,36 +40,70 @@ header h2{margin:4px 0 0;font-size:16px;font-weight:400}
 body.dark #gallery img,body.dark #gallery video{box-shadow:0 2px 6px rgba(255,255,255,.15)}
 
 /* ---------- Fullscreen Mode (Updated) ---------- */
-/* The main container for fullscreen content */
+#fullscreenBtn{
+    position:fixed;
+    bottom:25px; /* Adjust spacing */
+    left:25px; /* Position on the left */
+    background:#006400;
+    color:#fff;
+    border:none;
+    border-radius:50%; /* Make it circular */
+    width:60px; /* Make it bigger */
+    height:60px; /* Make it bigger */
+    font-size:28px; /* Larger icon */
+    cursor:pointer;
+    z-index:999;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
 #fullscreenBox{
     position: fixed;
     inset: 0;
     background: #000;
     z-index: 10000;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    /* Default is hidden, the button will make it appear */
     display: none;
+    justify-content: center;
+    align-items: center;
 }
 #fullscreenBox img, #fullscreenBox video{
-    display: inline-block;
-    width: 100vw;
-    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
     object-fit: contain;
+    display: none; /* Hide all items by default */
+}
+#fullscreenBox img.active, #fullscreenBox video.active{
+    display: block; /* Show only the active item */
 }
 #fullscreenBox .close{
     position:absolute;
     top:15px;
-    left:15px;
+    right:15px; /* Move to top right */
     background:#fff;
     color:#000;
     border:none;
     border-radius:50%;
-    width:35px;
-    height:35px;
-    font-size:20px;
+    width:40px;
+    height:40px;
+    font-size:22px;
     cursor:pointer;
+    z-index: 10001; /* Ensure button is on top of content */
+}
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10001;
+}
+#prevBtn {
+    right: 15px;
+}
+#nextBtn {
+    left: 15px;
 }
 
 /* ---------- About Developer (animated) ---------- */
@@ -154,6 +188,8 @@ body.dark .about-card{background:linear-gradient(135deg,#1a1a1a 0%,#333 100%)}
 
 <div id="fullscreenBox">
   <button class="close" onclick="closeFullscreen()">✕</button>
+  <button class="nav-btn" id="prevBtn" onclick="changeFullscreenItem(-1)">&gt;</button>
+  <button class="nav-btn" id="nextBtn" onclick="changeFullscreenItem(1)">&lt;</button>
 </div>
 
 <button id="fullscreenBtn" onclick="openFullscreen()">⛶</button>
@@ -188,9 +224,12 @@ for(let i=1;i<=10;i++){items.push(i===2?{t:'v',s:'files/2.mp4'}:{t:'i',s:`files/
 items.push({t:'v',s:'files/11.mp4'},{t:'v',s:'files/12.mp4'});
 for(let i=12;i<=17;i++){items.push({t:'i',s:`files/${i}.png`});}
 
+// Global variable to keep track of the current item
+let currentIndex = 0;
+
 // Function to populate the galleries with content
 function populateGalleries() {
-    items.forEach(({t,s})=>{
+    items.forEach(({t,s}, index)=>{
         // Populate the small, vertical gallery on the home page
         const elSmall = t==='v'?document.createElement('video'):document.createElement('img');
         elSmall.src=s; if(t==='v') elSmall.controls=true;
@@ -198,18 +237,48 @@ function populateGalleries() {
 
         // Populate the fullscreen horizontal gallery
         const elFull = t==='v'?document.createElement('video'):document.createElement('img');
-        elFull.src=s; if(t==='v') elFull.controls=true;
+        elFull.src=s; 
+        if(t==='v') elFull.controls=true;
+        // Add a class for identification and attach a click event
+        elFull.classList.add('fullscreen-item');
+        elFull.addEventListener('click', () => openFullscreen(index));
         fullscreenBox.appendChild(elFull);
     });
 }
 populateGalleries(); // Call this function on script load
 
 /* ---------- Fullscreen Mode (Updated) ---------- */
-function openFullscreen(){
-  fullscreenBox.style.display = 'block';
+function openFullscreen(index = 0){
+    currentIndex = index;
+    updateFullscreenItem();
+    fullscreenBox.style.display = 'flex'; // Use flexbox for centering
 }
+
 function closeFullscreen(){
   fullscreenBox.style.display = 'none';
+}
+
+function updateFullscreenItem() {
+    const fullscreenItems = document.querySelectorAll('#fullscreenBox > img, #fullscreenBox > video');
+    // Hide all items
+    fullscreenItems.forEach(item => item.classList.remove('active'));
+    // Show only the current item
+    fullscreenItems[currentIndex].classList.add('active');
+
+    // Hide or show navigation buttons
+    document.getElementById('prevBtn').style.display = currentIndex === 0 ? 'none' : 'block';
+    document.getElementById('nextBtn').style.display = currentIndex === fullscreenItems.length - 1 ? 'none' : 'block';
+}
+
+function changeFullscreenItem(direction) {
+    const fullscreenItems = document.querySelectorAll('#fullscreenBox > img, #fullscreenBox > video');
+    currentIndex += direction;
+    if (currentIndex < 0) {
+        currentIndex = 0;
+    } else if (currentIndex >= fullscreenItems.length) {
+        currentIndex = fullscreenItems.length - 1;
+    }
+    updateFullscreenItem();
 }
 
 /* ---------- Reveal Animations ---------- */
@@ -235,8 +304,6 @@ obs.observe(aboutCard);
 /* ---------- Initial Load ---------- */
 openPage('home');
 
-// This line is no longer needed since the default display is none in CSS.
-// closeFullscreen();
 </script>
 </body>
 </html>
