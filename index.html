@@ -46,10 +46,11 @@ body.dark #gallery img,body.dark #gallery video{box-shadow:0 2px 6px rgba(255,25
     inset: 0;
     background: #000;
     z-index: 10000;
-    /* Correct properties for horizontal scrolling */
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
+    /* Default is hidden, the button will make it appear */
+    display: none;
 }
 #fullscreenBox img, #fullscreenBox video{
     display: inline-block;
@@ -125,6 +126,11 @@ body.dark .about-card{background:linear-gradient(135deg,#1a1a1a 0%,#333 100%)}
     <p>مدثر عبد العزيز النور</p>
     <p>رؤى الوليد جامع</p>
     <p>علي عوض علي</p>
+    <p>محمد عبد الرحيم حسن</p>
+    <p>احمد الطيب الفكي</p>
+    <p>مصطفى نصرالدين أحمد البشير</p>
+    <p>يونس بدر علي حسين</p>
+    <p>مؤيد الهادي المهدي</p>
     <p>بالإضافة إلى لجنة التنظيم</p>
   </div>
 </div>
@@ -229,8 +235,8 @@ obs.observe(aboutCard);
 /* ---------- Initial Load ---------- */
 openPage('home');
 
-// Hide the fullscreen gallery on initial load, but keep its content ready
-closeFullscreen();
+// This line is no longer needed since the default display is none in CSS.
+// closeFullscreen();
 </script>
 </body>
 </html>
