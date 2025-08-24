@@ -40,14 +40,13 @@ header h2{margin:4px 0 0;font-size:16px;font-weight:400}
 body.dark #gallery img,body.dark #gallery video{box-shadow:0 2px 6px rgba(255,255,255,.15)}
 
 /* ---------- Fullscreen Mode (Updated) ---------- */
-#fullscreenBtn{position:fixed;bottom:15px;right:15px;background:#006400;color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:22px;cursor:pointer;z-index:999}
+/* The main container for fullscreen content */
 #fullscreenBox{
-    /* The main change: make the box visible by default */
-    display: block; 
     position: fixed;
     inset: 0;
     background: #000;
     z-index: 10000;
+    /* Correct properties for horizontal scrolling */
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
@@ -150,6 +149,7 @@ body.dark .about-card{background:linear-gradient(135deg,#1a1a1a 0%,#333 100%)}
 <div id="fullscreenBox">
   <button class="close" onclick="closeFullscreen()">✕</button>
 </div>
+
 <button id="fullscreenBtn" onclick="openFullscreen()">⛶</button>
 
 <script>
@@ -176,31 +176,34 @@ function toggleDarkMode(){
 
 /* ---------- Dynamic Gallery ---------- */
 const gallery=document.getElementById('gallery');
+const fullscreenBox=document.getElementById('fullscreenBox');
 const items=[];
 for(let i=1;i<=10;i++){items.push(i===2?{t:'v',s:'files/2.mp4'}:{t:'i',s:`files/${i}.png`});}
 items.push({t:'v',s:'files/11.mp4'},{t:'v',s:'files/12.mp4'});
 for(let i=12;i<=17;i++){items.push({t:'i',s:`files/${i}.png`});}
-items.forEach(({t,s})=>{
-  const el=t==='v'?document.createElement('video'):document.createElement('img');
-  el.src=s; if(t==='v') el.controls=true;
-  gallery.appendChild(el);
-});
 
-/* ---------- Fullscreen Mode ---------- */
+// Function to populate the galleries with content
+function populateGalleries() {
+    items.forEach(({t,s})=>{
+        // Populate the small, vertical gallery on the home page
+        const elSmall = t==='v'?document.createElement('video'):document.createElement('img');
+        elSmall.src=s; if(t==='v') elSmall.controls=true;
+        gallery.appendChild(elSmall);
+
+        // Populate the fullscreen horizontal gallery
+        const elFull = t==='v'?document.createElement('video'):document.createElement('img');
+        elFull.src=s; if(t==='v') elFull.controls=true;
+        fullscreenBox.appendChild(elFull);
+    });
+}
+populateGalleries(); // Call this function on script load
+
+/* ---------- Fullscreen Mode (Updated) ---------- */
 function openFullscreen(){
-  const box=document.getElementById('fullscreenBox');
-  const closeBtn=box.querySelector('.close');
-  box.innerHTML=''; // Clear existing content
-  box.appendChild(closeBtn);
-  items.forEach(({t,s})=>{
-    const el=t==='v'?document.createElement('video'):document.createElement('img');
-    el.src=s; if(t==='v') el.controls=true;
-    box.appendChild(el);
-  });
-  box.style.display='block';
+  fullscreenBox.style.display = 'block';
 }
 function closeFullscreen(){
-  document.getElementById('fullscreenBox').style.display='none';
+  fullscreenBox.style.display = 'none';
 }
 
 /* ---------- Reveal Animations ---------- */
@@ -225,7 +228,9 @@ obs.observe(aboutCard);
 
 /* ---------- Initial Load ---------- */
 openPage('home');
-openFullscreen();
+
+// Hide the fullscreen gallery on initial load, but keep its content ready
+closeFullscreen();
 </script>
 </body>
 </html>
