@@ -224,7 +224,9 @@ const fullscreenBox=document.getElementById('fullscreenBox');
 const items=[];
 for(let i=1;i<=10;i++){items.push(i===2?{t:'v',s:'files/2.mp4'}:{t:'i',s:`files/${i}.png`});}
 items.push({t:'v',s:'files/11.mp4'},{t:'v',s:'files/12.mp4'});
-for(let i=12;i<=18;i++){items.push({t:'i',s:`files/${i}.png`});}
+for(let i=12;i<=14;i++){items.push({t:'i',s:`files/${i}.png`});}
+items.push({t:'i',s:'files/15p.PNG'},{t:'i',s:'files/16p.PNG'},{t:'i',s:'files/17p.PNG'},{t:'i',s:'files/18p.PNG'});
+for(let i=15;i<=18;i++){items.push({t:'i',s:`files/${i}.png`});}
 
 // Global variable to keep track of the current item
 let currentIndex = 0;
